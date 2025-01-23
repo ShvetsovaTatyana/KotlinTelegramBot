@@ -11,7 +11,7 @@ fun main() {
             |0 – Выход""".trimMargin()
         println(menu)
         val number = readln().toInt()
-        if (number < 0 || number > 2)
+        if (number !in 0..2)
             println("Введите число 1, 2 или 0")
         else
             when (number) {
