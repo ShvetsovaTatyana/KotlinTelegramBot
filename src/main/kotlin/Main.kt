@@ -3,6 +3,30 @@ package org.example
 import java.io.File
 
 fun main() {
+    val dictionary: MutableList<Word> = loadDictionary()
+    val totalCount: Double = dictionary.size.toDouble()
+    val learnedCount = dictionary.filter { it.correctAnswersCount >= 3 }.size
+    val percent: Int = ((learnedCount / totalCount) * 100).toInt()
+
+    while (true) {
+        val menu = """|Меню:
+            |1 – Учить слова
+            |2 – Статистика
+            |0 – Выход""".trimMargin()
+        println(menu)
+        val number = readln().toInt()
+        if (number < 0 || number > 2)
+            println("Введите число 1, 2 или 0")
+        else
+            when (number) {
+                1 -> println("Вы выбрали учить слова")
+                2 -> println("Ваша статистика: Выучено ${learnedCount} из ${totalCount.toInt()}  слов | $percent%\n")
+                0 -> return
+            }
+    }
+}
+
+fun loadDictionary(): MutableList<Word> {
     val file = File("words.txt")
     val listOfStrings = file.readLines()
     val dictionary: MutableList<Word> = mutableListOf()
@@ -16,5 +40,5 @@ fun main() {
             )
         dictionary.add(word)
     }
-    println(dictionary)
+    return dictionary
 }
