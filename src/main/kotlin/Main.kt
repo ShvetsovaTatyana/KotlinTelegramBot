@@ -2,11 +2,13 @@ package org.example
 
 import java.io.File
 
+const val MIN_NUMBER_OF_CORRECT_ANSWERS = 3
+
 fun main() {
     val dictionary: MutableList<Word> = loadDictionary()
-    val totalCount: Double = dictionary.size.toDouble()
-    val learnedCount = dictionary.filter { it.correctAnswersCount >= 3 }.size
-    val percent: Int = ((learnedCount / totalCount) * 100).toInt()
+    var totalCount = 0.0
+    var learnedCount = 0
+    var percent = 0
 
     while (true) {
         val menu = """|Меню:
@@ -20,7 +22,12 @@ fun main() {
         else
             when (number) {
                 1 -> println("Вы выбрали учить слова")
-                2 -> println("Ваша статистика: Выучено ${learnedCount} из ${totalCount.toInt()}  слов | $percent%\n")
+                2 -> {
+                    totalCount = dictionary.size.toDouble()
+                    learnedCount = dictionary.filter { it.correctAnswersCount >= MIN_NUMBER_OF_CORRECT_ANSWERS }.size
+                    percent = ((learnedCount / totalCount) * 100).toInt()
+                    println("Ваша статистика: Выучено ${learnedCount} из ${totalCount.toInt()}  слов | $percent%\n")
+                }
                 0 -> return
             }
     }
