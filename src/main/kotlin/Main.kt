@@ -36,7 +36,7 @@ fun main() {
                                     |4 - ${dictionary[3].translate}"""
                                     .trimMargin()
                             )
-                            val answer = readln()
+                            val userAnswerInput = readln().toInt()
                         }
                     }
                 }
