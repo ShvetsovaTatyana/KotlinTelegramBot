@@ -21,12 +21,13 @@ fun main() {
                 1 -> {
                     println("Вы выбрали учить слова")
                     val notLearnedList = dictionary.map { it.original }
+                    val questionWords = notLearnedList.shuffled().take(4)
+                    val correctAnswer = questionWords.take(1)
                     if (notLearnedList.isEmpty()) {
                         println("Все слова в словаре выучены")
                         continue
                     } else {
-                        val questionWords = notLearnedList.shuffled().take(4)
-                        val correctAnswer = questionWords.take(1)
+
                         while (notLearnedList.isNotEmpty()) {
                             println(
                                 """|${correctAnswer[0]}:
