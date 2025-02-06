@@ -3,6 +3,7 @@ package org.example
 import java.io.File
 
 const val MIN_NUMBER_OF_CORRECT_ANSWERS = 3
+const val WORDS_TO_STUDY = 4
 
 fun main() {
     val dictionary: MutableList<Word> = loadDictionary()
@@ -20,9 +21,9 @@ fun main() {
             when (number) {
                 1 -> {
                     println("Вы выбрали учить слова")
-                    val notLearnedList = dictionary.map { it.original }
-                    val questionWords = notLearnedList.shuffled().take(4)
-                    val correctAnswer = questionWords.take(1)
+                    val notLearnedList = dictionary
+                    val questionWords = notLearnedList.shuffled().take(WORDS_TO_STUDY)
+                    val correctAnswer = questionWords.random()
                     if (notLearnedList.isEmpty()) {
                         println("Все слова в словаре выучены")
                         continue
@@ -30,12 +31,14 @@ fun main() {
 
                         while (notLearnedList.isNotEmpty()) {
                             println(
-                                """|${correctAnswer[0]}:
-                                    |1 - ${dictionary[0].translate}
-                                    |2 - ${dictionary[1].translate}
-                                    |3 - ${dictionary[2].translate}
-                                    |4 - ${dictionary[3].translate}"""
-                                    .trimMargin()
+                                questionWords.mapIndexed { index, value ->
+                                    val indexNew = index + 1
+                                    "$indexNew - ${value.translate}"
+                                }.joinToString(
+                                    separator = "\n",
+                                    prefix = "${correctAnswer.original}:\n",
+                                    postfix = "|".trimMargin()
+                                )
                             )
                             val userAnswerInput = readln().toInt()
                         }
