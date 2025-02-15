@@ -21,19 +21,13 @@ fun main() {
             when (number) {
                 1 -> {
                     println("Вы выбрали учить слова")
-                    val notLearnedList = arrayListOf<Word>()
-                    dictionary.forEach {
-                        if (it.correctAnswersCount < 3)
-                            notLearnedList.add(it)
-                    }
-                    val questionWords = notLearnedList.shuffled().take(WORDS_TO_STUDY)
-                    val correctAnswer = questionWords.random()
-                    if (correctAnswer.correctAnswersCount >= 3)
-                        notLearnedList.remove(correctAnswer)
+                    val notLearnedList = dictionary.filter { it.correctAnswersCount < 3 }
                     if (notLearnedList.isEmpty()) {
                         println("Все слова в словаре выучены")
                         continue
                     } else {
+                        val questionWords = notLearnedList.shuffled().take(WORDS_TO_STUDY)
+                        val correctAnswer = questionWords.random()
                         while (notLearnedList.isNotEmpty()) {
                             println(
                                 questionWords.mapIndexed { index, value ->
