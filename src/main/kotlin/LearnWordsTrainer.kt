@@ -61,8 +61,6 @@ class LearnWordsTrainer {
 
     private fun loadDictionary(): MutableList<Word> {
         try {
-
-
             val file = File("words.txt")
             val listOfStrings = file.readLines()
             val dictionary: MutableList<Word> = mutableListOf()
