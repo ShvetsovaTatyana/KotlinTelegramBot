@@ -2,6 +2,8 @@ package org.example
 
 import java.io.File
 
+const val ALREADY_LEARNED = 3
+
 data class Statistics(
     val totalCount: Int,
     val learnedCount: Int,
@@ -16,6 +18,7 @@ data class Question(
 class LearnWordsTrainer {
     private var question: Question? = null
     private val dictionary: MutableList<Word> = loadDictionary()
+
     fun getStatistics(): Statistics {
         val totalCount = dictionary.size
         val learnedCount = dictionary.filter { it.correctAnswersCount >= MIN_NUMBER_OF_CORRECT_ANSWERS }.size
@@ -24,7 +27,7 @@ class LearnWordsTrainer {
     }
 
     fun getNextQuestion(): Question? {
-        val notLearnedList = dictionary.filter { it.correctAnswersCount < 3 }
+        val notLearnedList = dictionary.filter { it.correctAnswersCount < ALREADY_LEARNED }
         if (notLearnedList.isEmpty()) return null
         val questionWords = notLearnedList.shuffled().take(WORDS_TO_STUDY)
         val correctAnswer = questionWords.random()
