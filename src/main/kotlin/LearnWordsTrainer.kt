@@ -2,7 +2,8 @@ package org.example
 
 import java.io.File
 
-const val ALREADY_LEARNED = 3
+const val MIN_NUMBER_OF_CORRECT_ANSWERS = 3
+const val WORDS_TO_STUDY = 4
 
 data class Statistics(
     val totalCount: Int,
@@ -27,9 +28,15 @@ class LearnWordsTrainer {
     }
 
     fun getNextQuestion(): Question? {
-        val notLearnedList = dictionary.filter { it.correctAnswersCount < ALREADY_LEARNED }
+        val notLearnedList = dictionary.filter { it.correctAnswersCount < MIN_NUMBER_OF_CORRECT_ANSWERS }
         if (notLearnedList.isEmpty()) return null
-        val questionWords = notLearnedList.shuffled().take(WORDS_TO_STUDY)
+        val questionWords = if (notLearnedList.size < WORDS_TO_STUDY) {
+            val learnedList = dictionary.filter { it.correctAnswersCount >= MIN_NUMBER_OF_CORRECT_ANSWERS }.shuffled()
+            notLearnedList.shuffled().take(WORDS_TO_STUDY) +
+                    learnedList.take(WORDS_TO_STUDY - notLearnedList.size)
+        } else {
+            notLearnedList.shuffled().take(WORDS_TO_STUDY)
+        }.shuffled()
         val correctAnswer = questionWords.random()
         question = Question(
             variants = questionWords,
@@ -53,20 +60,24 @@ class LearnWordsTrainer {
     }
 
     private fun loadDictionary(): MutableList<Word> {
-        val file = File("words.txt")
-        val listOfStrings = file.readLines()
-        val dictionary: MutableList<Word> = mutableListOf()
-        listOfStrings.forEach {
-            val line = it.split("|")
-            val word =
-                Word(
-                    original = line[0],
-                    translate = line[1],
-                    correctAnswersCount = line.getOrNull(2)?.toIntOrNull() ?: 0
-                )
-            dictionary.add(word)
+        try {
+            val file = File("words.txt")
+            val listOfStrings = file.readLines()
+            val dictionary: MutableList<Word> = mutableListOf()
+            listOfStrings.forEach {
+                val line = it.split("|")
+                val word =
+                    Word(
+                        original = line[0],
+                        translate = line[1],
+                        correctAnswersCount = line.getOrNull(2)?.toIntOrNull() ?: 0
+                    )
+                dictionary.add(word)
+            }
+            return dictionary
+        } catch (e: IndexOutOfBoundsException) {
+            throw IllegalStateException("некорректный файл")
         }
-        return dictionary
     }
 
     private fun saveDictionary(dictionary: MutableList<Word>) {
