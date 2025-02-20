@@ -10,10 +10,13 @@ fun main(args: Array<String>) {
     val urlGetMe = "https://api.telegram.org/bot$botToken/getMe"
     val urlGetUpdates = "https://api.telegram.org/bot$botToken/getUpdates"
     val client: HttpClient = HttpClient.newBuilder().build()
-    val request: HttpRequest = HttpRequest.newBuilder().uri(URI.create(urlGetMe)).build()
-    val requestTwo: HttpRequest = HttpRequest.newBuilder().uri(URI.create(urlGetUpdates)).build()
-    val response: HttpResponse<String> = client.send(request, HttpResponse.BodyHandlers.ofString())
-    val responseTwo: HttpResponse<String> = client.send(requestTwo, HttpResponse.BodyHandlers.ofString())
-    println(response.body())
-    println(responseTwo.body())
+
+    val requestGet: HttpRequest = HttpRequest.newBuilder().uri(URI.create(urlGetMe)).build()
+    val requestUpdate: HttpRequest = HttpRequest.newBuilder().uri(URI.create(urlGetUpdates)).build()
+
+    val responseGet: HttpResponse<String> = client.send(requestGet, HttpResponse.BodyHandlers.ofString())
+    val responseUpdate: HttpResponse<String> = client.send(requestUpdate, HttpResponse.BodyHandlers.ofString())
+
+    println(responseGet)
+    println(responseUpdate.body())
 }
