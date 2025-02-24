@@ -13,12 +13,23 @@ fun main(args: Array<String>) {
         Thread.sleep(2000)
         val updates: String = getUpdates(botToken, updateId)
         println(updates)
-        val startUpdateId = updates.lastIndexOf("update_id")
-        val endUpdateId = updates.lastIndexOf(",\n\"message\"")
-        if (startUpdateId == -1 || endUpdateId == -1) continue
-        val updateIdString = updates.substring(startUpdateId + 11, endUpdateId)
-        println(updateIdString)
-        updateId = updateIdString.toInt() + 1
+
+
+        val idRegex: Regex = "\"result\":\\[\\{\"update_id\":(.+?),".toRegex()
+        val matchResultId = idRegex.findAll(updates)
+        val matchResultIdLast = matchResultId.lastOrNull()
+        val groupsId = matchResultIdLast?.groups
+        val id = groupsId?.get(1)?.value
+        updateId = id?.toInt()?.plus(1) ?: 0
+        println(id)
+
+        val messageTextRegex: Regex = "\"text\":\"(.+?)\"".toRegex()
+        val matchResult = messageTextRegex.findAll(updates)
+        val matchResultLast = matchResult.lastOrNull()
+        val groups = matchResultLast?.groups
+        val text = groups?.get(1)?.value
+
+        println(text)
     }
 }
 
