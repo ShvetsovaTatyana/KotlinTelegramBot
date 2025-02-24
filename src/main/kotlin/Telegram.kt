@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
         println(updates)
 
 
-        val idRegex: Regex = "\"result\":\\[\\{\"update_id\":(.+?),".toRegex()
+        val idRegex: Regex = "\"update_id\":(.+?),".toRegex()
         val matchResultId = idRegex.findAll(updates)
         val matchResultIdLast = matchResultId.lastOrNull()
         val groupsId = matchResultIdLast?.groups
@@ -28,7 +28,6 @@ fun main(args: Array<String>) {
         val matchResultLast = matchResult.lastOrNull()
         val groups = matchResultLast?.groups
         val text = groups?.get(1)?.value
-
         println(text)
     }
 }
