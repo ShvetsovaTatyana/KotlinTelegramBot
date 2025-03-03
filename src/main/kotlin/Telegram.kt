@@ -8,19 +8,18 @@ import java.net.http.HttpResponse
 fun main(args: Array<String>) {
     val botToken = args[0]
     var updateId = 0
+    val idRegex: Regex = "\"update_id\":(.+?),".toRegex()
 
     while (true) {
         Thread.sleep(2000)
         val updates: String = getUpdates(botToken, updateId)
         println(updates)
 
-
-        val idRegex: Regex = "\"update_id\":(.+?),".toRegex()
         val matchResultId = idRegex.findAll(updates)
         val matchResultIdLast = matchResultId.lastOrNull()
         val groupsId = matchResultIdLast?.groups
         val id = groupsId?.get(1)?.value
-        updateId = id?.toInt()?.plus(1) ?: 0
+        updateId = id?.toInt()?.plus(1) ?: continue
         println(id)
 
         val messageTextRegex: Regex = "\"text\":\"(.+?)\"".toRegex()
