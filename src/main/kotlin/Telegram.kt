@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
         val matchResultIdLast = matchResultId.lastOrNull()
         val groupsId = matchResultIdLast?.groups
         val id = groupsId?.get(1)?.value
-        updateId = id?.toInt()?.plus(1) ?: continue
+        updateId = id?.toIntOrNull()?.plus(1) ?: continue
         println(id)
 
         val messageTextRegex: Regex = "\"text\":\"(.+?)\"".toRegex()
