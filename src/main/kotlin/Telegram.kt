@@ -7,11 +7,11 @@ fun main(args: Array<String>) {
     val messageTextRegex: Regex = "\"text\":\"(.+?)\"".toRegex()
     val chatIdRegex: Regex = "\"id\":(.+?),".toRegex()
     val messageText = "Hello"
-    val telegramBotService = TelegramBotService()
+    val telegramBotService = TelegramBotService(botToken)
 
     while (true) {
         Thread.sleep(2000)
-        val updates = telegramBotService.getUpdates(botToken, updateId)
+        val updates = telegramBotService.getUpdates(updateId)
         println(updates)
 
         val matchResultId = idRegex.findAll(updates)
@@ -34,7 +34,7 @@ fun main(args: Array<String>) {
         println(chatId)
         if (text == messageText)
             if (chatId != null)
-                telegramBotService.sendMessage(botToken, chatId = chatId, messageText)
+                telegramBotService.sendMessage(chatId = chatId, messageText)
 
     }
 }
