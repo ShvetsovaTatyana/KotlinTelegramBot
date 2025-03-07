@@ -9,7 +9,7 @@ fun main(args: Array<String>) {
     val dataRegex: Regex = "\"data\":\"(.+?)\"".toRegex()
     val messageText = ""
     val telegramBotService = TelegramBotService(botToken)
-    //val trainer = LearnWordsTrainer()
+    val trainer = LearnWordsTrainer()
 
     while (true) {
         Thread.sleep(2000)
