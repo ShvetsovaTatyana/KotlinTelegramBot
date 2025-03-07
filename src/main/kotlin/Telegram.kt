@@ -9,7 +9,7 @@ fun main(args: Array<String>) {
     val dataRegex: Regex = "\"data\":\"(.+?)\"".toRegex()
     val messageText = ""
     val telegramBotService = TelegramBotService(botToken)
-    val trainer = LearnWordsTrainer()
+    //val trainer = LearnWordsTrainer()
 
     while (true) {
         Thread.sleep(2000)
@@ -32,7 +32,7 @@ fun main(args: Array<String>) {
         val matchResultChatId = chatIdRegex.findAll(updates)
         val matchResultChatIdLast = matchResultChatId.lastOrNull()
         val groupsChatId = matchResultChatIdLast?.groups
-        val chatId = groupsChatId?.get(1)?.value
+        val chatId = groupsChatId?.get(1)?.value?.toIntOrNull() ?: continue
         println(chatId)
 
         val matchResultData = dataRegex.findAll(updates)
@@ -40,15 +40,12 @@ fun main(args: Array<String>) {
         val groupsData = matchResultDataLast?.groups
         val data = groupsData?.get(1)?.value
         if (text == "Hello")
-            if (chatId != null)
                 telegramBotService.sendMessage(chatId = chatId, messageText)
 
         if (text == "/start")
-            if (chatId != null)
                 telegramBotService.sendMenu(chatId = chatId)
 
-        if (data == "statistics_clicked")
-            if (chatId != null)
+        if (data == STATISTICS_CLICKED)
                 telegramBotService.sendMessage(chatId = chatId, "Выучено 10 из 10 слов | 100%")
     }
 }
