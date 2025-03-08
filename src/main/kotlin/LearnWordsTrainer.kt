@@ -5,6 +5,7 @@ import java.io.File
 const val MIN_NUMBER_OF_CORRECT_ANSWERS = 3
 const val WORDS_TO_STUDY = 4
 
+
 data class Word(
     val original: String,
     val translate: String,
@@ -90,8 +91,4 @@ class LearnWordsTrainer {
         val file = File("words.txt")
         file.writeText(dictionary.joinToString(separator = "\n") { "${it.original}|${it.translate}|${it.correctAnswersCount}" })
     }
-
-
 }
-
-
