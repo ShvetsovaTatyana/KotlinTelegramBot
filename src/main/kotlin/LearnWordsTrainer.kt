@@ -5,6 +5,12 @@ import java.io.File
 const val MIN_NUMBER_OF_CORRECT_ANSWERS = 3
 const val WORDS_TO_STUDY = 4
 
+data class Word(
+    val original: String,
+    val translate: String,
+    var correctAnswersCount: Int = 0
+)
+
 data class Statistics(
     val totalCount: Int,
     val learnedCount: Int,
