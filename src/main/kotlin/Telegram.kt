@@ -32,7 +32,7 @@ fun main(args: Array<String>) {
         val matchResultChatId = chatIdRegex.findAll(updates)
         val matchResultChatIdLast = matchResultChatId.lastOrNull()
         val groupsChatId = matchResultChatIdLast?.groups
-        val chatId = groupsChatId?.get(1)?.value?.toIntOrNull() ?: continue
+        val chatId = groupsChatId?.get(1)?.value?.toLongOrNull() ?: continue
         println(chatId)
 
         val matchResultData = dataRegex.findAll(updates)

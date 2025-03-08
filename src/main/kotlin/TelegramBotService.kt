@@ -20,14 +20,14 @@ class TelegramBotService(private var botToken: String) {
         return responseUpdate.body()
     }
 
-    fun sendMessage(chatId: Int, text: String) {
+    fun sendMessage(chatId: Long, text: String) {
         val urlSendMessage =
             "$API_ADDRESS$botToken/sendMessage?chat_id=$chatId&text=${URLEncoder.encode(text, "UTF-8")}"
         val requestSendMessage: HttpRequest = HttpRequest.newBuilder().uri(URI.create(urlSendMessage)).build()
         client.send(requestSendMessage, HttpResponse.BodyHandlers.ofString())
     }
 
-    fun sendMenu(chatId: Int) {
+    fun sendMenu(chatId: Long) {
         val urlSendMessage =
             "$API_ADDRESS$botToken/sendMessage"
         val sendMenuBody = """
