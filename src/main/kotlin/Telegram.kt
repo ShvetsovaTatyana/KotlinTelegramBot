@@ -32,21 +32,25 @@ fun main(args: Array<String>) {
         val matchResultChatId = chatIdRegex.findAll(updates)
         val matchResultChatIdLast = matchResultChatId.lastOrNull()
         val groupsChatId = matchResultChatIdLast?.groups
-        val chatId = groupsChatId?.get(1)?.value?.toIntOrNull() ?: continue
+        val chatId = groupsChatId?.get(1)?.value?.toLongOrNull() ?: continue
         println(chatId)
 
         val matchResultData = dataRegex.findAll(updates)
         val matchResultDataLast = matchResultData.lastOrNull()
         val groupsData = matchResultDataLast?.groups
         val data = groupsData?.get(1)?.value
-        if (text == "Hello")
-                telegramBotService.sendMessage(chatId = chatId, messageText)
+        if (text == "Hello") telegramBotService.sendMessage(chatId = chatId, messageText)
 
-        if (text == "/start")
-                telegramBotService.sendMenu(chatId = chatId)
+        if (text == "/start") telegramBotService.sendMenu(chatId = chatId)
 
-        if (data == STATISTICS_CLICKED)
-                telegramBotService.sendMessage(chatId = chatId, "Выучено 10 из 10 слов | 100%")
+        if (data == STATISTICS_CLICKED) {
+            val resultStatistics = trainer.getStatistics()
+            telegramBotService.sendMessage(
+                chatId = chatId,
+                "Выучено: ${resultStatistics.learnedCount} из ${resultStatistics.totalCount} слов | " +
+                        "${resultStatistics.percent}%"
+            )
+        }
     }
 }
 
