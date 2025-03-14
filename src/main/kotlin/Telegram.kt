@@ -51,9 +51,21 @@ fun main(args: Array<String>) {
                         "${resultStatistics.percent}%"
             )
         }
+        if (data == LEARN_WORDS_CLICKED) {
+            checkNextQuestionAndSend(trainer, telegramBotService, chatId)
+        }
     }
 }
 
-
-
-
+fun checkNextQuestionAndSend(
+    trainer: LearnWordsTrainer,
+    telegramBotService: TelegramBotService,
+    chatId: Long
+) {
+    val question = trainer.getNextQuestion()
+    if (question == null) {
+        telegramBotService.sendMessage(chatId, "Все слова в словаре выучены")
+        return
+    }
+    telegramBotService.sendQuestion(chatId = chatId, question)
+}
